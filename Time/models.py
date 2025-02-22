@@ -24,8 +24,8 @@ class Project(models.Model):
 class TimeEntry(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='time_entries')
     # user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='time_entries')
-    start_time = models.DateTimeField()
-    duration = models.TimeField()
+    start_time = models.DateTimeField(auto_now_add=True)
+    duration = models.DurationField()
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
