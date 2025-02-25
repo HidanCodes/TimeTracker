@@ -10,12 +10,6 @@ class CustomUserSerializer(serializers.ModelSerializer):
 class DeviceAuthSerializer(serializers.Serializer):
     id_device = serializers.UUIDField()
 
-class ProjectSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Project
-        fields = ('id', 'title', 'description', 'created_at', 'updated_at')
-        read_only_fields = ('created_at', 'updated_at')
-
 class TimeEntrySerializer(serializers.ModelSerializer):
     duration = serializers.SerializerMethodField()
     project = category = serializers.SlugRelatedField(
@@ -26,4 +20,12 @@ class TimeEntrySerializer(serializers.ModelSerializer):
         model = TimeEntry
         fields = ('id', 'project', 'start_time',
                   'description', 'duration', 'created_at', 'updated_at')
+        read_only_fields = ('created_at', 'updated_at')
+
+class ProjectSerializer(serializers.ModelSerializer):
+    time_entries=TimeEntrySerializer(many=True)
+
+    class Meta:
+        model = Project
+        fields = ('id', 'title', 'description', 'created_at', 'updated_at','time_entries')
         read_only_fields = ('created_at', 'updated_at')
