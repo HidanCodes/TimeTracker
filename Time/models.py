@@ -4,7 +4,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
-    device_id = models.CharField(max_length=50, unique=True)
+    id_device = models.UUIDField(unique=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -12,7 +12,7 @@ class User(AbstractUser):
         return self.username
 
 class Project(models.Model):
-    title = models.CharField(max_length=30)
+    title = models.CharField(max_length=30,unique=True)
     description = models.TextField(blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='projects')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -23,7 +23,6 @@ class Project(models.Model):
 
 class TimeEntry(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='time_entries')
-    # user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='time_entries')
     start_time = models.DateTimeField(auto_now_add=True)
     duration = models.DurationField()
     description = models.TextField(blank=True)
