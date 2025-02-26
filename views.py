@@ -13,7 +13,7 @@ from rest_framework.views import APIView # type:ignore
 class UserView(APIView):
     
     def get(self, request):
-        users = Project.objects.all()
+        users = User.objects.all()
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
     
@@ -41,13 +41,13 @@ class ProjectView(APIView):
         
 class TimeEntiryView(APIView)    :
     def get(self, request):
-        time = Project.objects.all()
-        serializer = ProjectSerializer(time, many=True)
+        time = TimeEntry.objects.all()
+        serializer = TimeEntrySerializer(time, many=True)
         return Response(serializer.data)
     
     
     def post(self,request):
-        serializer = ProjectSerializer(data=request.data)
+        serializer = TimeEntrySerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -71,7 +71,7 @@ class UserDetail(APIView) :
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     def delete(self,request,pk):   
         try:
             Post=User.objects.get(pk=pk)
@@ -86,15 +86,16 @@ class ProjectsDetail(APIView) :
             projects=Project.objects.get(pk=pk)
         except Project.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)    
-        serializer = UserSerializer(projects)
-        return Response(serializer.data)
+        # userSerializer=UserSerializer(projects.user)
+        serializer = ProjectSerializer(projects)
+        return Response(serializer.data )
     
     def put (self,request,pk):
         try:
             projects=Project.objects.get(pk=pk)
         except Project.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)    
-        serializer = UserSerializer(projects,data=request.data)
+        serializer = ProjectSerializer(projects,data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -114,7 +115,7 @@ class TimeEntiryDetail(APIView) :
             times=TimeEntry.objects.get(pk=pk)
         except TimeEntry.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)    
-        serializer = UserSerializer(times)
+        serializer = TimeEntrySerializer(times)
         return Response(serializer.data)
     
     def put (self,request,pk):
@@ -122,7 +123,7 @@ class TimeEntiryDetail(APIView) :
             times=TimeEntry.objects.get(pk=pk)
         except TimeEntry.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)    
-        serializer = UserSerializer(times,data=request.data)
+        serializer = TimeEntrySerializer(times,data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
