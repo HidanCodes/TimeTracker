@@ -1,6 +1,10 @@
+import uuid
+
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from.models import User,Project,TimeEntry
-from Time.Serializers import UserSerializer,ProjectSerializer,TimeEntrySerializer
+from Time.Serializers import UserSerializer, ProjectSerializer, TimeEntrySerializer, DeviceAuthSerializer
 
 from rest_framework.decorators import api_view # type: ignore
 from rest_framework.response import Response # type: ignore
@@ -8,6 +12,34 @@ from rest_framework import status # type: ignore
 from rest_framework.views import APIView # type:ignore
 
 
+
+class DeviceAuthView(APIView):
+    def post(self, request):
+        serializer = DeviceAuthSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        id_device = serializer.validated_data['id_device']
+
+        # Try to find existing user with this device ID
+        try:
+            user = User.objects.get(id_device=id_device)
+        except User.DoesNotExist:
+            # Create new user if not exists
+            username = f'user_{uuid.uuid4().hex[:8]}'
+            user = User.objects.create(
+                username=username,
+                id_device=id_device
+            )
+
+        # Generate JWT tokens
+        refresh = RefreshToken.for_user(user)
+
+        return Response({
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+            'user': user.username,
+        })
 class UserView(APIView):
 
     def get(self, request):
@@ -24,10 +56,10 @@ class UserView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ProjectView(APIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     def get(self, request):
-        # projects = Project.objects.filter(user=request.user)
-        projects = Project.objects.all()
+        projects = Project.objects.filter(user=request.user)
+        # projects = Project.objects.all()
         serializer = ProjectSerializer(projects, many=True)
         return Response(serializer.data)
 
