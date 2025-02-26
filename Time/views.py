@@ -39,6 +39,7 @@ class DeviceAuthView(APIView):
             'refresh': str(refresh),
             'access': str(refresh.access_token),
             'user': user.username,
+            'id_device' : id_device,
         })
 class UserView(APIView):
 
@@ -67,7 +68,7 @@ class ProjectView(APIView):
     def post(self,request):
         serializer = ProjectSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
