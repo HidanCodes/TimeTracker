@@ -1,10 +1,10 @@
 from django.db import models
-
-from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
     id_device = models.UUIDField(unique=True, null=True)
+    first_name = models.CharField(max_length=50, null=True,blank=True)
+    last_name = models.CharField(max_length=50, null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

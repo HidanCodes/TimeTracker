@@ -1,6 +1,6 @@
 import uuid
 
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from.models import User,Project,TimeEntry
@@ -41,6 +41,8 @@ class DeviceAuthView(APIView):
             'user': user.username,
             'id_device' : id_device,
         })
+
+# ################pak shavad ############
 class UserView(APIView):
 
     def get(self, request):
@@ -48,13 +50,6 @@ class UserView(APIView):
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
 
-
-    def post(self,request):
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ProjectView(APIView):
     permission_classes = [IsAuthenticated]
@@ -74,7 +69,8 @@ class ProjectView(APIView):
 
 class TimeEntiryView(APIView)    :
     def get(self, request):
-        time = TimeEntry.objects.all()
+        # time = TimeEntry.objects.all()
+        time = TimeEntry.objects.filter(project=request.data.get('project'))
         serializer = TimeEntrySerializer(time, many=True)
         return Response(serializer.data)
 
@@ -86,6 +82,8 @@ class TimeEntiryView(APIView)    :
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+# ####################pak shavad be joz update########
 class UserDetail(APIView) :
     def get (self,request,pk):
         try:

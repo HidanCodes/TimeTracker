@@ -11,13 +11,10 @@ class DeviceAuthSerializer(serializers.Serializer):
     id_device = serializers.UUIDField()
 
 class TimeEntrySerializer(serializers.ModelSerializer):
-    project = serializers.SlugRelatedField(
-        queryset=Project.objects.all(),
-        slug_field='title'
-    )
+    project_name = serializers.CharField(source='project.title', read_only=True)
     class Meta:
         model = TimeEntry
-        fields = ('id', 'project', 'start_time',
+        fields = ('id', 'project', 'project_name', 'start_time',
                   'description', 'duration', 'created_at', 'updated_at')
         read_only_fields = ('created_at', 'updated_at')
 
