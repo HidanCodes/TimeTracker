@@ -1,15 +1,14 @@
 import uuid
 
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.views import APIView
 
 from.models import User,Project,TimeEntry
 from Time.Serializers import UserSerializer, ProjectSerializer, TimeEntrySerializer, DeviceAuthSerializer
 
-from rest_framework.decorators import api_view # type: ignore
-from rest_framework.response import Response # type: ignore
-from rest_framework import status # type: ignore
-from rest_framework.views import APIView # type:ignore
 
 
 
