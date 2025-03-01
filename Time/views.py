@@ -84,9 +84,10 @@ class TimeEntiryView(APIView)    :
 
 # ####################pak shavad be joz update########
 class UserDetail(APIView) :
-    def get (self,request,pk):
+    def get (self,request):
         try:
-            user=User.objects.get(pk=pk)
+            user = request.user
+            # user=User.objects.get(pk=pk)
         except User.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         serializer = UserSerializer(user)

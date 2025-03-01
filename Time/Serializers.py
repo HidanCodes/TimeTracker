@@ -4,7 +4,7 @@ from .models import User, Project, TimeEntry
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'id_device')
+        fields = ('id', 'username', 'id_device','first_name','last_name')
         read_only_fields = ('id',)
 
 class DeviceAuthSerializer(serializers.Serializer):
