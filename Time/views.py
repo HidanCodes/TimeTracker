@@ -41,9 +41,8 @@ class DeviceAuthView(APIView):
             'id_device' : id_device,
         })
 
-# ################pak shavad ############
 class UserView(APIView):
-
+    permission_classes = [IsAuthenticated]
     def get(self, request):
         users = User.objects.all()
         serializer = UserSerializer(users, many=True)
@@ -67,8 +66,8 @@ class ProjectView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class TimeEntiryView(APIView)    :
+    permission_classes = [IsAuthenticated]
     def get(self, request):
-        # time = TimeEntry.objects.all()
         time = TimeEntry.objects.filter(project=request.data.get('project'))
         serializer = TimeEntrySerializer(time, many=True)
         return Response(serializer.data)
@@ -82,8 +81,8 @@ class TimeEntiryView(APIView)    :
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# ####################pak shavad be joz update########
 class UserDetail(APIView) :
+    permission_classes = [IsAuthenticated]
     def get (self,request):
         try:
             user = request.user
@@ -105,6 +104,7 @@ class UserDetail(APIView) :
 
 
 class ProjectsDetail(APIView) :
+    permission_classes = [IsAuthenticated]
     def get (self,request,pk):
         try:
             projects=Project.objects.get(pk=pk)
@@ -133,6 +133,7 @@ class ProjectsDetail(APIView) :
 
 
 class TimeEntiryDetail(APIView) :
+    permission_classes = [IsAuthenticated]
     def get (self,request,pk):
         try:
             times=TimeEntry.objects.get(pk=pk)
