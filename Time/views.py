@@ -147,7 +147,7 @@ class TimeEntiryDetail(APIView) :
             times=TimeEntry.objects.get(pk=pk)
         except TimeEntry.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        serializer = TimeEntrySerializer(times,data=request.data)
+        serializer = TimeEntrySerializer(times,data=request.data,partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
