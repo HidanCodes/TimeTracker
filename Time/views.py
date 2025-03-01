@@ -87,29 +87,22 @@ class UserDetail(APIView) :
     def get (self,request):
         try:
             user = request.user
-            # user=User.objects.get(pk=pk)
         except User.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         serializer = UserSerializer(user)
         return Response(serializer.data)
 
-    def put (self,request,pk):
+    def put (self,request):
         try:
-            user=User.objects.get(pk=pk)
+            user = request.user
         except User.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        serializer = UserSerializer(user,data=request.data)
+        serializer = UserSerializer(user,data=request.data,partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    def delete(self,request,pk):
-        try:
-            Post=User.objects.get(pk=pk)
-        except User.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        Post.delete()
-        return Response("deleted",status=status.HTTP_204_NO_CONTENT)
+
 
 class ProjectsDetail(APIView) :
     def get (self,request,pk):
