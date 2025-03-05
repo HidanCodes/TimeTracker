@@ -1,6 +1,6 @@
 from django.urls import path
 from Time.views import UserView, ProjectView, TimeEntiryView, UserDetail, ProjectsDetail, TimeEntiryDetail, \
-    DeviceAuthView
+    DeviceAuthView,Welcome
 
 urlpatterns = [
     path('auth/device/', DeviceAuthView.as_view(), name='device-auth'),
@@ -10,4 +10,5 @@ urlpatterns = [
     path('userdetailview/',UserDetail.as_view()),
     path('projectview/<int:pk>/',ProjectsDetail.as_view()),
     path('TimeEntiryView/<int:pk>/',TimeEntiryDetail.as_view()),
+    path('',Welcome.as_view())
 ]

@@ -159,3 +159,7 @@ class TimeEntiryDetail(APIView) :
             return Response(status=status.HTTP_404_NOT_FOUND)
         times.delete()
         return Response("deleted",status=status.HTTP_204_NO_CONTENT)
+
+class Welcome(APIView):
+    def get (self,request):
+        return Response ("Welcome")
