@@ -29,7 +29,7 @@ SECRET_KEY = secret
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['hidancodes.pythonanywhere.com','127.0.0.1']
 
 
 # Application definition
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'Time',
     'rest_framework',
     'rest_framework_simplejwt',
+    'drf_yasg',
 
     ]
 
